@@ -1,0 +1,14 @@
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\bin\Debug\net9.0\TCPClient.exe
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\bin\Debug\net9.0\TCPClient.deps.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\bin\Debug\net9.0\TCPClient.runtimeconfig.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\bin\Debug\net9.0\TCPClient.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\bin\Debug\net9.0\TCPClient.pdb
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.AssemblyInfoInputs.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.AssemblyInfo.cs
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.csproj.CoreCompileInputs.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\refint\TCPClient.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.pdb
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.genruntimeconfig.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\ref\TCPClient.dll

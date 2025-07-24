@@ -1,0 +1,14 @@
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.AssemblyInfoInputs.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.AssemblyInfo.cs
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.csproj.CoreCompileInputs.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\bin\Debug\net9.0\TCPServer.exe
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\bin\Debug\net9.0\TCPServer.deps.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\bin\Debug\net9.0\TCPServer.runtimeconfig.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\bin\Debug\net9.0\TCPServer.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\bin\Debug\net9.0\TCPServer.pdb
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\refint\TCPServer.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.pdb
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.genruntimeconfig.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\ref\TCPServer.dll
