@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat WebSocket Multi-Canaux</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .chat-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .chat-header {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .connection-status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.8rem;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    
+    .status-connected { background-color: #28a745; }
+    .status-disconnected { background-color: #dc3545; }
+    .status-connecting { background-color: #ffc107; }
+    
+    #log {
+      height: 400px;
+      overflow-y: auto;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .message-line {
+      margin-bottom: 8px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      animation: fadeIn 0.3s ease-in;
+    }
+    
+    .message-system {
+      background: rgba(23, 162, 184, 0.1);
+      color: #17a2b8;
+      font-style: italic;
+    }
+    
+    .message-user {
+      background: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+    
+    .message-channel {
+      background: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+      font-weight: bold;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .input-group {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-control {
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      box-shadow: none;
+      border-color: #4CAF50;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      border: none;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    }
+    
+    .btn-outline-secondary {
+      border-color: #6c757d;
+      color: #6c757d;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-secondary:hover {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      transform: translateY(-2px);
+    }
+    
+    .channel-info {
+      background: rgba(108, 117, 125, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      margin: 1rem 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    
+    .user-count {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.8rem;
+    }
+    
+    .typing-indicator {
+      padding: 0.5rem 1.5rem;
+      font-style: italic;
+      color: #6c757d;
+      font-size: 0.8rem;
+      min-height: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 0.5rem;
+      }
+      
+      #log {
+        height: 300px;
+        padding: 1rem;
+      }
+      
+      .chat-header {
+        padding: 1rem;
+      }
+      
+      .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* Scrollbar personnalisée */
+    #log::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    #log::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    
+    #log::-webkit-scrollbar-thumb {
+      background: #4CAF50;
+      border-radius: 10px;
+    }
+    
+    #log::-webkit-scrollbar-thumb:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="user-count">
+              <i class="fas fa-users"></i>
+              <span id="userCount">0</span> utilisateurs
+            </div>
+            <h3 class="mb-0">
+              <i class="fas fa-comments"></i>
+              Chat Multi-Canaux
+            </h3>
+            <div class="connection-status">
+              <span class="status-dot status-connecting" id="statusDot"></span>
+              <span id="connectionStatus">Connexion...</span>
+            </div>
+          </div>
+          
+          <div class="channel-info">
+            <i class="fas fa-hashtag"></i>
+            Canal actuel: <strong id="currentChannel">global</strong>
+          </div>
+          
+          <div id="log"></div>
+          
+          <div class="typing-indicator" id="typingIndicator"></div>
+          
+          <div class="p-3">
+            <div class="row g-2">
+              <div class="col-12 col-md-8">
+                <div class="input-group">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="inputMsg" 
+                    placeholder="Tapez votre message..."
+                    maxlength="500"
+                  >
+                  <button class="btn btn-primary" type="button" id="btnSend">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="d-none d-sm-inline ms-1">Envoyer</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <button class="btn btn-outline-secondary w-100" id="btnChan">
+                  <i class="fas fa-exchange-alt"></i>
+                  <span class="d-none d-sm-inline ms-1">Changer Canal</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="row mt-2">
+              <div class="col-12">
+                <small class="text-muted">
+                  <i class="fas fa-info-circle"></i>
+                  Commandes: /channel [nom] pour changer de canal, /help pour l'aide
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const logEl = document.getElementById('log');
+    const inputMsg = document.getElementById('inputMsg');
+    const btnSend = document.getElementById('btnSend');
+    const btnChan = document.getElementById('btnChan');
+    const statusDot = document.getElementById('statusDot');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const currentChannel = document.getElementById('currentChannel');
+    const userCount = document.getElementById('userCount');
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    let socket = null;
+    let username = "";
+    let isTyping = false;
+    let typingTimeout = null;
+
+    // Demande du pseudo avec validation
+    function getUsername() {
+      let name = "";
+      while (!name || name.length < 2) {
+        name = prompt("Entrez votre pseudo (minimum 2 caractères):");
+        if (name === null) return null; // Annulation
+        name = name.trim();
+        if (!name || name.length < 2) {
+          alert("Le pseudo doit contenir au moins 2 caractères.");
+        }
+      }
+      return name;
+    }
+
+    // Initialisation
+    function init() {
+      const name = getUsername();
+      if (!name) {
+        document.body.innerHTML = '<div class="container mt-5"><div class="alert alert-warning">Connexion annulée.</div></div>';
+        return;
+      }
+      username = name;
+      connectWebSocket();
+    }
+
+    function connectWebSocket() {
+      updateConnectionStatus('connecting', 'Connexion...');
+      
+      try {
+        socket = new WebSocket("ws://localhost:8080");
+        
+        socket.addEventListener('open', () => {
+          updateConnectionStatus('connected', 'Connecté');
+          appendLog("[Système] Connecté au serveur", 'system');
+          socket.send(username);
+        });
+
+        socket.addEventListener('message', event => {
+          const data = event.data;
+          
+          // Gestion des messages spéciaux (ne pas afficher dans le chat)
+          if (data.startsWith('[USER_COUNT]')) {
+            const count = data.replace('[USER_COUNT]', '');
+            userCount.textContent = count;
+            return;
+          }
+          
+          if (data.startsWith('[CHANNEL]')) {
+            const channel = data.replace('[CHANNEL]', '');
+            currentChannel.textContent = channel;
+            return;
+          }
+          
+          if (data.startsWith('[TYPING]')) {
+            const typingUser = data.replace('[TYPING]', '');
+            handleTypingIndicator(typingUser);
+            return;
+          }
+          
+          if (data === '[STOP_TYPING]' || data.startsWith('[STOP_TYPING]')) {
+            handleTypingIndicator('');
+            return;
+          }
+          
+          // Ignorer les messages de commande de frappe
+          if (data === '[TYPING]' || data === '[STOP_TYPING]') {
+            return;
+          }
+          
+          // Messages normaux
+          let messageType = 'user';
+          if (data.includes('[Système]')) messageType = 'system';
+          if (data.includes('a rejoint le canal') || data.includes('a quitté le canal')) messageType = 'channel';
+          
+          appendLog(data, messageType);
+        });
+
+        socket.addEventListener('close', () => {
+          updateConnectionStatus('disconnected', 'Déconnecté');
+          appendLog("[Système] Déconnecté du serveur", 'system');
+          
+          // Tentative de reconnexion après 3 secondes
+          setTimeout(() => {
+            if (confirm("Connexion perdue. Voulez-vous vous reconnecter ?")) {
+              connectWebSocket();
+            }
+          }, 3000);
+        });
+
+        socket.addEventListener('error', (error) => {
+          updateConnectionStatus('disconnected', 'Erreur');
+          appendLog("[Système] Erreur de connexion", 'system');
+        });
+        
+      } catch (error) {
+        updateConnectionStatus('disconnected', 'Erreur');
+        appendLog("[Système] Impossible de se connecter au serveur", 'system');
+      }
+    }
+
+    function updateConnectionStatus(status, text) {
+      statusDot.className = `status-dot status-${status}`;
+      connectionStatus.textContent = text;
+    }
+
+    function appendLog(text, type = 'user') {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message-line message-${type}`;
+      
+      // Ajout de l'horodatage
+      const timestamp = new Date().toLocaleTimeString('fr-FR', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+      
+      messageDiv.innerHTML = `<small class="text-muted">[${timestamp}]</small> ${text}`;
+      
+      logEl.appendChild(messageDiv);
+      logEl.scrollTop = logEl.scrollHeight;
+      
+      // Suppression des anciens messages (garder seulement les 100 derniers)
+      while (logEl.children.length > 100) {
+        logEl.removeChild(logEl.firstChild);
+      }
+    }
+
+    function sendMessage() {
+      const txt = inputMsg.value.trim();
+      if (!txt || !socket || socket.readyState !== WebSocket.OPEN) return;
+      
+      socket.send(txt);
+      inputMsg.value = "";
+      
+      // Arrêter l'indicateur de frappe
+      if (isTyping) {
+        isTyping = false;
+        socket.send(`[STOP_TYPING]${username}`);
+      }
+    }
+
+    function changeChannel() {
+      const channels = ['global', 'dev', 'support', 'random', 'help'];
+      let channelList = channels.map((ch, i) => `${i + 1}. ${ch}`).join('\n');
+      
+      const input = prompt(`Choisissez un canal:\n${channelList}\n\nOu tapez un nom personnalisé:`);
+      if (!input) return;
+      
+      let channel = input.trim();
+      
+      // Si c'est un numéro, utiliser le canal correspondant
+      const num = parseInt(channel);
+      if (num >= 1 && num <= channels.length) {
+        channel = channels[num - 1];
+      }
+      
+      if (channel && socket && socket.readyState === WebSocket.OPEN) {
+        socket.send("/channel " + channel);
+      }
+    }
+
+    function handleTypingIndicator(user) {
+      if (user && user.trim() && user !== username) {
+        typingIndicator.textContent = `${user} est en train d'écrire...`;
+        typingIndicator.style.display = 'block';
+        
+        // Masquer après 3 secondes
+        clearTimeout(window.typingDisplayTimeout);
+        window.typingDisplayTimeout = setTimeout(() => {
+          typingIndicator.style.display = 'none';
+          typingIndicator.textContent = '';
+        }, 3000);
+      } else {
+        typingIndicator.style.display = 'none';
+        typingIndicator.textContent = '';
+        clearTimeout(window.typingDisplayTimeout);
+      }
+    }
+
+    // Événements
+    btnSend.addEventListener('click', sendMessage);
+    btnChan.addEventListener('click', changeChannel);
+
+    inputMsg.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      } else {
+        // Indicateur de frappe - envoyer seulement le nom d'utilisateur
+        if (!isTyping && socket && socket.readyState === WebSocket.OPEN) {
+          isTyping = true;
+          socket.send(`[TYPING]${username}`);
+        }
+        
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+          if (isTyping) {
+            isTyping = false;
+            socket.send(`[STOP_TYPING]${username}`);
+          }
+        }, 2000);
+      }
+    });
+
+    // Gestion du focus pour mobile
+    inputMsg.addEventListener('focus', () => {
+      setTimeout(() => {
+        logEl.scrollTop = logEl.scrollHeight;
+      }, 300);
+    });
+
+    // Raccourcis clavier
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        changeChannel();
+      }
+    });
+
+    // Initialisation au chargement
+    window.addEventListener('load', init);
+    
+    // Nettoyage avant fermeture
+    window.addEventListener('beforeunload', () => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.close();
+      }
+    });
+  </script>
+</body>
+</html>

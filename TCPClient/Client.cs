@@ -4,6 +4,7 @@
     using System.Net.Sockets;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     class Client
     {
@@ -19,6 +20,11 @@
 
             using NetworkStream flux = client.GetStream();
 
+            var canaux = new Dictionary<string, StringBuilder>();
+            string canalActuel = "global";
+            if (!canaux.ContainsKey(canalActuel))
+                canaux[canalActuel] = new StringBuilder();
+
             _ = Task.Run(async () =>
             {
                 byte[] tampon = new byte[1024];
@@ -27,19 +33,29 @@
                     int lu = await flux.ReadAsync(tampon, 0, tampon.Length);
                     if (lu == 0) break;
                     string reponse = Encoding.UTF8.GetString(tampon, 0, lu).Trim();
-                    Console.WriteLine(reponse);
+                    Console.WriteLine($"[Canal {canalActuel}] {reponse}");
                 }
             });
 
-            Console.WriteLine("Entrez vos messages ('/exit' pour quitter) :");
+            Console.WriteLine("Entrez vos messages ('/exit' pour quitter, '/canal [nom]' pour changer de canal) :");
             while (true)
             {
                 string ligne = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(ligne)) continue;
                 if (ligne.Equals("/exit", StringComparison.OrdinalIgnoreCase)) break;
+                if (ligne.StartsWith("/canal", StringComparison.OrdinalIgnoreCase))
+                {
+                    string nouveauCanal = ligne.Split(' ')[1];
+                    if (!canaux.ContainsKey(nouveauCanal))
+                        canaux[nouveauCanal] = new StringBuilder();
+                    canalActuel = nouveauCanal;
+                    Console.WriteLine($"[Client] Vous êtes maintenant dans le canal {canalActuel}.");
+                    continue;
+                }
 
-                byte[] envoi = Encoding.UTF8.GetBytes(ligne + Environment.NewLine);
+                byte[] envoi = Encoding.UTF8.GetBytes($"[{canalActuel}] {ligne}{Environment.NewLine}");
                 await flux.WriteAsync(envoi, 0, envoi.Length);
+                canaux[canalActuel].AppendLine(ligne);
             }
 
             Console.WriteLine("[Client] Déconnexion");

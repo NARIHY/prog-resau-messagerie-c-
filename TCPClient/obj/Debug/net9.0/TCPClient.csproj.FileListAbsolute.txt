@@ -12,3 +12,4 @@ C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj
 C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.pdb
 C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.genruntimeconfig.cache
 C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\ref\TCPClient.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPClient\obj\Debug\net9.0\TCPClient.sourcelink.json

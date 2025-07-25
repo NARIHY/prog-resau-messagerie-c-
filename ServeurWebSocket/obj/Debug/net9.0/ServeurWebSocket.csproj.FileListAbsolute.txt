@@ -1,0 +1,15 @@
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\bin\Debug\net9.0\ServeurWebSocket.exe
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\bin\Debug\net9.0\ServeurWebSocket.deps.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\bin\Debug\net9.0\ServeurWebSocket.runtimeconfig.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\bin\Debug\net9.0\ServeurWebSocket.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\bin\Debug\net9.0\ServeurWebSocket.pdb
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.AssemblyInfoInputs.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.AssemblyInfo.cs
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.csproj.CoreCompileInputs.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.sourcelink.json
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\refint\ServeurWebSocket.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.pdb
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ServeurWebSocket.genruntimeconfig.cache
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\ServeurWebSocket\obj\Debug\net9.0\ref\ServeurWebSocket.dll

@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("TCPClient")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("ServeurWebSocket")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+83bc52d6f088d8304be9968941b9b19fff7b7570")]
-[assembly: System.Reflection.AssemblyProductAttribute("TCPClient")]
-[assembly: System.Reflection.AssemblyTitleAttribute("TCPClient")]
+[assembly: System.Reflection.AssemblyProductAttribute("ServeurWebSocket")]
+[assembly: System.Reflection.AssemblyTitleAttribute("ServeurWebSocket")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Généré par la classe MSBuild WriteCodeFragment.

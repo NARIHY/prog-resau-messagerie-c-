@@ -12,3 +12,4 @@ C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj
 C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.pdb
 C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.genruntimeconfig.cache
 C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\ref\TCPServer.dll
+C:\Users\mahenina.randrianari\project\zed\C#\Programmation réseau\TCPServer\obj\Debug\net9.0\TCPServer.sourcelink.json
